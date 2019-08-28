@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.wizards.com/Service/2013-03">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:GetEventData>
+         <ns:request>
+            <ns:AuthToken>${access_token}</ns:AuthToken>
+            <ns:SanctionNumber>19-04-13825568</ns:SanctionNumber>
+         </ns:request>
+      </ns:GetEventData>
+   </soapenv:Body>
+</soapenv:Envelope>

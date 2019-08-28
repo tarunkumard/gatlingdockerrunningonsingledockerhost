@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.wizards.com/Service/2013-03">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:GetMaterialOrderingRules>
+         <ns:request>
+            <ns:AuthToken>${access_token}</ns:AuthToken>
+            <ns:OrgGuid>ffabef94-819e-4ffb-86f9-44e6ba117db1</ns:OrgGuid>
+         </ns:request>
+      </ns:GetMaterialOrderingRules>
+   </soapenv:Body>
+</soapenv:Envelope>

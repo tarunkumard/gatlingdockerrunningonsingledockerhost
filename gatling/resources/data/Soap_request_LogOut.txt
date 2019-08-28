@@ -1,0 +1,10 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.wizards.com/Service/2013-03">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:LogOut>
+         <ns:request>
+            <ns:AuthToken>${access_token}</ns:AuthToken>
+         </ns:request>
+      </ns:LogOut>
+   </soapenv:Body>
+</soapenv:Envelope>
