@@ -1,0 +1,85 @@
+image: docker:stable
+
+variables:
+   # When using dind service we need to instruct docker, to talk with the
+   # daemon started inside of the service. The daemon is available with
+   # a network connection instead of the default /var/run/docker.sock socket.
+   #
+   # The 'docker' hostname is the alias of the service container as described at
+   # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+   #
+   # Note that if you're using Kubernetes executor, the variable should be set to
+   # tcp://localhost:2375 because of how Kubernetes executor connects services
+   # to the job container
+  DOCKER_HOST: tcp://docker:2375/
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+   # When using dind, it's wise to use the overlayfs driver for
+   # improved performance.
+  DOCKER_DRIVER: overlay2
+  CONTAINER_DEV_IMAGE: https://hub.docker.com/r/tarunkumard/gatling/:$CI_COMMIT_SHA
+  AWS_DEFAULT_REGION: us-west-2
+  BUCKET_NAME: gitlabgatlingreport
+
+
+services:
+  - docker:18-dind
+  
+stages:
+ - build
+ - test
+
+
+before_script:
+  - apk update && apk add git
+  - git --version
+  - apk add python python-dev py-pip build-base libffi-dev openssl-dev
+  - pip install docker-compose
+
+build:
+  stage: build
+  tags:
+   - docker
+  script:
+    - pwd
+    - find $(pwd)
+    - docker login -u $dockerid -p $dockerpwd
+    - docker system prune -a 
+    - docker build -t eventresfilter1.0:local .
+    - docker images
+    - docker images | grep "eventres1.0" | awk '{print $3}'
+    - docker tag $(docker images | grep "eventres1.0" | awk '{print $3}') $dockerid/eventresfilter1.0
+    - docker push $dockerid/eventresfilter1.0
+    - cd $(pwd)/Tests  
+    - pwd && docker-compose up
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - Tests/
+
+       
+
+
+   
+
+
+
+  
+test:
+ image: python:latest
+ stage: test
+ tags:
+    - docker
+
+ before_script:
+  - pip install awscli # Install the SDK
+ script:
+  - 'find $(pwd)'
+  - 'find Tests'
+  - 'cd $(pwd)/Tests/${filename}* && ls && hostname -i'
+  - 'aws s3 cp $(pwd) s3://${BUCKET_NAME}/${CI_COMMIT_REF_SLUG} --recursive' 
+  - 'aws s3 cp  s3://${BUCKET_NAME}/${CI_COMMIT_REF_SLUG} s3://${BUCKET_NAME}/PreviousExecuted/$(date +"%h-%m-%s") --recursive --include "Tests/${filename}*"'
+ environment:
+   name: ${CI_COMMIT_REF_SLUG}
+   url: http://${BUCKET_NAME}.s3-website.${AWS_DEFAULT_REGION}.amazonaws.com/${CI_COMMIT_REF_SLUG}  
+   

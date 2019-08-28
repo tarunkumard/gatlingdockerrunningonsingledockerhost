@@ -1,0 +1,41 @@
+plugins {
+    id 'scala'
+    id "com.github.lkishalmi.gatling" version "0.7.3"
+}
+
+def xms = System.getenv("JAVA_XMS_SIZE") ?: "512M"
+def xmx = System.getenv("JAVA_XMX_SIZE") ?: "512M"
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-library:2.12.6'
+	gatling group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
+    
+}
+
+
+
+gatling {
+    
+    jvmArgs = ['-server', '-XX:+UseThreadPriorities',
+               '-XX:ThreadPriorityPolicy=42',
+               "-Xms${xms}", "-Xmx${xmx}", '-Xmn100M',
+               '-XX:+HeapDumpOnOutOfMemoryError',
+               '-XX:+AggressiveOpts',
+               '-XX:+OptimizeStringConcat',
+               '-XX:+UseFastAccessorMethods',
+               '-XX:+UseParNewGC',
+               '-XX:+UseConcMarkSweepGC',
+               '-XX:+CMSParallelRemarkEnabled',
+               '-Djava.net.preferIPv4Stack=true',
+               '-Djava.net.preferIPv6Addresses=false']
+    
+}
+
+ScalaCompileOptions.metaClass.daemonServer = true
+ScalaCompileOptions.metaClass.fork = true
+ScalaCompileOptions.metaClass.useAnt = false
+ScalaCompileOptions.metaClass.useCompileDaemon = false

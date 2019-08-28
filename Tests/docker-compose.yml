@@ -1,0 +1,8 @@
+version: "3.4"
+services:
+    gatling_companystore:
+        container_name: gatling_eventreservation
+        image: tarunkumard/eventresfilter1.0
+        volumes:
+            - $PWD:/opt/build/reports/gatling/
+
