@@ -47,7 +47,7 @@ build:
     - docker build -t eventresfilter1.0:local .
     - docker images
     - docker images | grep "eventres1.0" | awk '{print $3}'
-    - docker tag $(docker images | grep "eventres1.0" | awk '{print $3}') $dockerid/eventresfilter1.0
+    - docker tag $(docker images | grep "eventresfilter1.0" | awk '{print $3}') $dockerid/eventresfilter1.0
     - docker push $dockerid/eventresfilter1.0
     - cd $(pwd)/Tests  
     - pwd && docker-compose up
