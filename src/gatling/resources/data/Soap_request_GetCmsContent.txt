@@ -1,0 +1,11 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.wizards.com/Service/2013-03">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:GetCmsContent>
+         <ns:request>
+            <ns:LanguageCulture>pt-br</ns:LanguageCulture>
+            <ns:Path>OPIS/WER/2</ns:Path>
+         </ns:request>
+      </ns:GetCmsContent>
+   </soapenv:Body>
+</soapenv:Envelope>

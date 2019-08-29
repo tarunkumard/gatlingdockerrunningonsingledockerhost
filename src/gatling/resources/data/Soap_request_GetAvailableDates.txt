@@ -1,0 +1,15 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.wizards.com/Service/2013-03">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:GetAvailableDates>
+         <ns:request>
+            <ns:AuthToken>${access_token}</ns:AuthToken>
+            <ns:IsUpdate>false</ns:IsUpdate>
+            <ns:MasterRuleCode>MEMC</ns:MasterRuleCode>
+            <ns:OrganizationGuid>ffabef94-819e-4ffb-86f9-44e6ba117db1</ns:OrganizationGuid>
+            <ns:SanctionNumber>16-03-7715135</ns:SanctionNumber>
+            <ns:SeasonCode>MEMC2013</ns:SeasonCode>
+         </ns:request>
+      </ns:GetAvailableDates>
+   </soapenv:Body>
+</soapenv:Envelope>
